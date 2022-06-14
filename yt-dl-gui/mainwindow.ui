@@ -10,6 +10,12 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>400</width>
@@ -26,7 +32,7 @@
    <string>yt-dl-gui</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="starter">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -46,7 +52,7 @@
      <string>Start Downloading</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="urlIn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -64,14 +70,17 @@
      <string>URL(ex. https://youtube.com)</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="destIn">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>120</y>
-      <width>371</width>
+      <width>281</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
     <property name="placeholderText">
      <string>Full Path to the Destination Directory</string>
@@ -110,21 +119,112 @@
      </rect>
     </property>
     <property name="text">
-     <string>Download Youtube Video as MP4 or MP3!</string>
+     <string>Download Youtube video as video file or audio file!</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="audioOption">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>170</y>
-      <width>371</width>
-      <height>20</height>
+      <y>159</y>
+      <width>151</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Doenload as MP3</string>
+     <string>Download as Audio</string>
     </property>
+   </widget>
+   <widget class="QPushButton" name="destButtion">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>120</y>
+      <width>80</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select ...</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="audioFileFormat">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>160</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>MP3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>M4A</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>AAC</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>OPUS</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>WAV</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>webm</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="videoFileFormat">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>160</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>MP4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>MKV</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>OGG</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>AVI</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>WEBM</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -133,7 +233,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>19</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -170,10 +270,10 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>checkBox</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>urlIn</tabstop>
+  <tabstop>destIn</tabstop>
+  <tabstop>audioOption</tabstop>
+  <tabstop>starter</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -190,6 +290,38 @@
     <hint type="destinationlabel">
      <x>199</x>
      <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>audioOption</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>audioFileFormat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>314</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>audioOption</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>videoFileFormat</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>
